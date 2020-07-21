@@ -1,17 +1,20 @@
 package com.rajendra.androidxrecyclerview.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rajendra.androidxrecyclerview.ItemAnimation;
 import com.rajendra.androidxrecyclerview.R;
+import com.rajendra.androidxrecyclerview.UserDetails;
 import com.rajendra.androidxrecyclerview.model.UserData;
 
 import java.util.ArrayList;
@@ -40,13 +43,32 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerviewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerviewHolder holder, final int position) {
 
         holder.userName.setText(filteredUserDataList.get(position).getUserName());
         holder.userDesc.setText(filteredUserDataList.get(position).getDescp());
         holder.userImage.setImageResource(filteredUserDataList.get(position).getImageUrl());
 
         ItemAnimation.animateFadeIn(holder.itemView, position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, UserDetails.class);
+                intent.putExtra("username", filteredUserDataList.get(position).getUserName());
+                intent.putExtra("userDesc", filteredUserDataList.get(position).getDescp());
+                context.startActivity(intent);
+                }
+        });
+
+        holder.userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "User Name Clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }
